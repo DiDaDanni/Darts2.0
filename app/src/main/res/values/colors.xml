@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#28D904</color>
+    <color name="colorPrimaryDark">#29B80D</color>
+    <color name="colorAccent">#FF0000</color>
+    <color name="activePlayer">#FF0000</color>
+    <color name="inactivePlayer">#28D904</color>
+    <color name="colorButtonNormal">#F0F002</color>
+    <color name="grey">#F0F0F0</color>
+    <color name="whiteTrans">#80FFFFFF</color>
+</resources>

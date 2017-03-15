@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/kork">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteTrans"
+        android:layout_margin="20dp">
+        <TextView
+            android:id="@+id/player_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="18dp"
+            android:text="Choose a number of players:"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/player_number"
+            android:layout_margin="18dp"
+            >
+            <RadioButton
+                android:id="@+id/two_players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:layout_margin="18dp"
+                android:onClick="onRadioButtonClicked"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
+            <RadioButton
+                android:id="@+id/three_players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:layout_margin="18dp"
+                android:onClick="onRadioButtonClicked"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
+            <RadioButton
+                android:id="@+id/four_players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:layout_margin="18dp"
+                android:onClick="onRadioButtonClicked"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</RelativeLayout>
