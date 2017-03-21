@@ -14,6 +14,7 @@ import android.widget.Toast;
 /**
  * Created by Daniela on 25.02.2017.
  */
+import static android.R.color.black;
 import static com.example.android.darts.MainActivity.*;
 
 public class FourPlayersActivity extends AppCompatActivity {
@@ -26,6 +27,8 @@ public class FourPlayersActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         plusBtn = (Button)findViewById(R.id.plus);
+        playBtn = (Button)findViewById(R.id.play);
+        undoBtn = (Button)findViewById(R.id.undo);
         calcView = (TextView)findViewById(R.id.text_view_calc);
         playerOneView = (TextView)findViewById(R.id.player_one_value);
         playerTwoView = (TextView)findViewById(R.id.player_two_value);
@@ -43,6 +46,7 @@ public class FourPlayersActivity extends AppCompatActivity {
         playerFourEditText = (EditText)findViewById(R.id.player_four_edit);
 
         enableViews(gridLayout,false);
+        undoBtn.setEnabled(false);
     }
 
     public void onValueClick(View view){
@@ -108,14 +112,17 @@ public class FourPlayersActivity extends AppCompatActivity {
             thirdTime = 0;
 
             if (isPlayerOne){
+                undoPlayer = 1;
                 if (valuePlayerOne < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    undoBtn.setEnabled(true);
                     valuePlayerOne -= score;
                     playerOneView.setText(Integer.toString(valuePlayerOne));
 
                     if (valuePlayerOne == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 1; //winner
                             Toast.makeText(this, namePlayerOne + " wins", Toast.LENGTH_SHORT).show();
@@ -123,7 +130,7 @@ public class FourPlayersActivity extends AppCompatActivity {
                         else if (isFirst != 0){
                             if (isSecond == 0){
                                 isSecond = 1;    //second one
-                                Toast.makeText(this, namePlayerOne + " is multValue", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, namePlayerOne + " is second", Toast.LENGTH_SHORT).show();
                             }
                             else if (isSecond != 0){
                                 //third one
@@ -145,14 +152,17 @@ public class FourPlayersActivity extends AppCompatActivity {
                     activatePlayer("player2");
             }
             else if (isPlayerTwo){
+                undoPlayer = 2;
                 if (valuePlayerTwo < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerTwo -= score;
                     playerTwoView.setText(Integer.toString(valuePlayerTwo));
 
                     if (valuePlayerTwo == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 2; //winner
                             Toast.makeText(this, namePlayerTwo + " wins", Toast.LENGTH_SHORT).show();
@@ -160,7 +170,7 @@ public class FourPlayersActivity extends AppCompatActivity {
                         else if (isFirst != 0){
                             if (isSecond == 0){
                                 isSecond = 2;    //second one
-                                Toast.makeText(this, namePlayerTwo + " is multValue", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, namePlayerTwo + " is second", Toast.LENGTH_SHORT).show();
                             }
                             else if (isSecond != 0){
                                 //third one
@@ -183,14 +193,17 @@ public class FourPlayersActivity extends AppCompatActivity {
             }
 
             else if (isPlayerThree){
+                undoPlayer = 3;
                 if (valuePlayerThree < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerThree -= score;
                     playerThreeView.setText(Integer.toString(valuePlayerThree));
 
                     if (valuePlayerThree == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 3; //winner
                             Toast.makeText(this, namePlayerThree + " wins", Toast.LENGTH_SHORT).show();
@@ -198,7 +211,7 @@ public class FourPlayersActivity extends AppCompatActivity {
                         else if (isFirst != 0){
                             if (isSecond == 0){
                                 isSecond = 3;    //second one
-                                Toast.makeText(this, namePlayerThree + " is multValue", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, namePlayerThree + " is second", Toast.LENGTH_SHORT).show();
                             }
                             else if (isSecond != 0){
                                 //third one
@@ -220,14 +233,17 @@ public class FourPlayersActivity extends AppCompatActivity {
                     activatePlayer("player4");
             }
             else if (isPlayerFour){
+                undoPlayer = 4;
                 if (valuePlayerFour < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerFour -= score;
                     playerFourView.setText(Integer.toString(valuePlayerFour));
 
                     if (valuePlayerFour == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 4; //winner
                             Toast.makeText(this, namePlayerFour + " wins", Toast.LENGTH_SHORT).show();
@@ -235,7 +251,7 @@ public class FourPlayersActivity extends AppCompatActivity {
                         else if (isFirst != 0){
                             if (isSecond == 0){
                                 isSecond = 4;    //second one
-                                Toast.makeText(this, namePlayerFour + " is multValue", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, namePlayerFour + " is second", Toast.LENGTH_SHORT).show();
                             }
                             else if (isSecond != 0){
                                 //third one
@@ -258,9 +274,38 @@ public class FourPlayersActivity extends AppCompatActivity {
             }
 
             calcView.setText("");
+            undoScore = score;
             score = 0;
         }
 
+    }
+
+    public void onUndoClick(View view){
+
+        if (undoPlayer == 1){
+            valuePlayerOne += undoScore;
+            playerOneView.setText(Integer.toString(valuePlayerOne));
+            activatePlayer("player1");
+        }
+        else if (undoPlayer == 2){
+            valuePlayerTwo += undoScore;
+            playerTwoView.setText(Integer.toString(valuePlayerTwo));
+            activatePlayer("player2");
+        }
+
+        else if (undoPlayer == 3){
+            valuePlayerThree += undoScore;
+            playerThreeView.setText(Integer.toString(valuePlayerThree));
+            activatePlayer("player3");
+        }
+
+        else if (undoPlayer == 4){
+            valuePlayerFour += undoScore;
+            playerFourView.setText(Integer.toString(valuePlayerFour));
+            activatePlayer("player4");
+        }
+
+        undoBtn.setEnabled(false);
     }
 
 
@@ -322,7 +367,7 @@ public class FourPlayersActivity extends AppCompatActivity {
             isSecond = 0;
 
             if (isPlayerOne){
-                layoutOne.setBackground(getDrawable(R.drawable.border_color));
+                activatePlayer("player1");
             }
 
         }
@@ -341,6 +386,11 @@ public class FourPlayersActivity extends AppCompatActivity {
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutThree.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutFour.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerOneEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerThreeEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerFourEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player2":
@@ -353,6 +403,11 @@ public class FourPlayersActivity extends AppCompatActivity {
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutThree.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutFour.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerTwoEditText.setTextColor(getResources().getColor(black));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerThreeEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerFourEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player3":
@@ -365,6 +420,11 @@ public class FourPlayersActivity extends AppCompatActivity {
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutFour.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerThreeEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerFourEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player4":
@@ -377,6 +437,11 @@ public class FourPlayersActivity extends AppCompatActivity {
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutThree.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerFourEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerThreeEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
         }
     }
@@ -387,6 +452,23 @@ public class FourPlayersActivity extends AppCompatActivity {
         playerThreeEditText.setEnabled(enabled);
         playerFourEditText.setEnabled(enabled);
         startValueView.setEnabled(enabled);
+
+        changePlayButtonText(enabled);
+
+        if (enabled){
+            playerOneEditText.setTextColor(getResources().getColor(black));
+            playerTwoEditText.setTextColor(getResources().getColor(black));
+            playerThreeEditText.setTextColor(getResources().getColor(black));
+            playerFourEditText.setTextColor(getResources().getColor(black));
+        }
+
+    }
+
+    private void changePlayButtonText(boolean play){
+        if (play)
+            playBtn.setText(getResources().getString(R.string.play));
+        else
+            playBtn.setText(getResources().getString(R.string.restart));
     }
 }
 

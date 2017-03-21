@@ -276,6 +276,14 @@
             android:onClick="onResetClick"
             android:layout_alignBaseline="@id/play"
             android:layout_toEndOf="@+id/play" />
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:onClick="onUndoClick"
+            android:layout_alignBaseline="@id/reset"
+            android:layout_toEndOf="@+id/reset" />
 
     </RelativeLayout>
 

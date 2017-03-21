@@ -1,5 +1,6 @@
 package com.example.android.darts;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.R.color.black;
 import static com.example.android.darts.MainActivity.*;
 
 /**
@@ -27,6 +29,8 @@ public class ThreePlayersActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         plusBtn = (Button)findViewById(R.id.plus);
+        playBtn = (Button)findViewById(R.id.play);
+        undoBtn = (Button)findViewById(R.id.undo);
         calcView = (TextView)findViewById(R.id.text_view_calc);
         playerOneView = (TextView)findViewById(R.id.player_one_value);
         playerTwoView = (TextView)findViewById(R.id.player_two_value);
@@ -41,6 +45,7 @@ public class ThreePlayersActivity extends AppCompatActivity {
         playerThreeEditText = (EditText)findViewById(R.id.player_three_edit);
 
         enableViews(gridLayout,false);
+        undoBtn.setEnabled(false);
     }
 
     public void onValueClick(View view){
@@ -101,21 +106,24 @@ public class ThreePlayersActivity extends AppCompatActivity {
             thirdTime = 0;
 
             if (isPlayerOne){
+                undoPlayer = 1;
                 if (valuePlayerOne < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    undoBtn.setEnabled(true);
                     valuePlayerOne -= score;
                     playerOneView.setText(Integer.toString(valuePlayerOne));
 
                     if (valuePlayerOne == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 1; //winner
                             Toast.makeText(this, namePlayerOne + " wins", Toast.LENGTH_SHORT).show();
                         }
                         else if (isFirst != 0){
                             //second one
-                            Toast.makeText(this, namePlayerOne + " is multValue", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, namePlayerOne + " is second", Toast.LENGTH_SHORT).show();
                             enableViews(gridLayout,false);
                             enableEditTextViews(true);
                         }
@@ -131,21 +139,25 @@ public class ThreePlayersActivity extends AppCompatActivity {
                     activatePlayer("player2");
             }
             else if (isPlayerTwo){
+                undoPlayer = 2;
                 if (valuePlayerTwo < score){
+
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerTwo -= score;
                     playerTwoView.setText(Integer.toString(valuePlayerTwo));
 
                     if (valuePlayerTwo == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 2; //winner
                             Toast.makeText(this, namePlayerTwo + " wins", Toast.LENGTH_SHORT).show();
                         }
                         else if (isFirst != 0){
                             //second one
-                            Toast.makeText(this, namePlayerTwo + " is multValue", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, namePlayerTwo + " is second", Toast.LENGTH_SHORT).show();
                             enableViews(gridLayout,false);
                             enableEditTextViews(true);
                         }
@@ -161,21 +173,24 @@ public class ThreePlayersActivity extends AppCompatActivity {
             }
 
             else if (isPlayerThree){
+                undoPlayer = 3;
                 if (valuePlayerThree < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerThree -= score;
                     playerThreeView.setText(Integer.toString(valuePlayerThree));
 
                     if (valuePlayerThree == 0){
+                        undoBtn.setEnabled(false);
                         if (isFirst == 0){
                             isFirst = 3; //winner
                             Toast.makeText(this, namePlayerThree + " wins", Toast.LENGTH_SHORT).show();
                         }
                         else if (isFirst != 0){
                             //second one
-                            Toast.makeText(this, namePlayerThree + " is multValue", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, namePlayerThree + " is second", Toast.LENGTH_SHORT).show();
                             enableViews(gridLayout,false);
                             enableEditTextViews(true);
                         }
@@ -191,9 +206,31 @@ public class ThreePlayersActivity extends AppCompatActivity {
             }
 
             calcView.setText("");
+            undoScore = score;
             score = 0;
         }
 
+    }
+
+    public void onUndoClick(View view){
+
+        if (undoPlayer == 1){
+            valuePlayerOne += undoScore;
+            playerOneView.setText(Integer.toString(valuePlayerOne));
+            activatePlayer("player1");
+        }
+        else if (undoPlayer == 2){
+            valuePlayerTwo += undoScore;
+            playerTwoView.setText(Integer.toString(valuePlayerTwo));
+            activatePlayer("player2");
+        }
+
+        else if (undoPlayer == 3){
+            valuePlayerThree += undoScore;
+            playerThreeView.setText(Integer.toString(valuePlayerThree));
+            activatePlayer("player3");
+        }
+        undoBtn.setEnabled(false);
     }
 
 
@@ -247,11 +284,13 @@ public class ThreePlayersActivity extends AppCompatActivity {
 
             enableViews(gridLayout,true);
             enableEditTextViews(false);
+            undoBtn.setEnabled(false);
 
             isFirst = 0;
 
             if (isPlayerOne){
-                layoutOne.setBackground(getDrawable(R.drawable.border_color));
+                //layoutOne.setBackground(getDrawable(R.drawable.border_color));
+                activatePlayer("player1");
             }
 
         }
@@ -267,6 +306,10 @@ public class ThreePlayersActivity extends AppCompatActivity {
                 layoutOne.setBackground(getDrawable(R.drawable.border_color));
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutThree.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerOneEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerThreeEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player2":
@@ -277,6 +320,10 @@ public class ThreePlayersActivity extends AppCompatActivity {
                 layoutTwo.setBackground(getDrawable(R.drawable.border_color));
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutThree.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerTwoEditText.setTextColor(getResources().getColor(black));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerThreeEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player3":
@@ -287,6 +334,10 @@ public class ThreePlayersActivity extends AppCompatActivity {
                 layoutThree.setBackground(getDrawable(R.drawable.border_color));
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerThreeEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
         }
     }
@@ -296,6 +347,21 @@ public class ThreePlayersActivity extends AppCompatActivity {
         playerTwoEditText.setEnabled(enabled);
         playerThreeEditText.setEnabled(enabled);
         startValueView.setEnabled(enabled);
+        changePlayButtonText(enabled);
+
+        if (enabled){
+            playerOneEditText.setTextColor(getResources().getColor(black));
+            playerTwoEditText.setTextColor(getResources().getColor(black));
+            playerThreeEditText.setTextColor(getResources().getColor(black));
+        }
+
+    }
+
+    private void changePlayButtonText(boolean play){
+        if (play)
+            playBtn.setText(getResources().getString(R.string.play));
+        else
+            playBtn.setText(getResources().getString(R.string.restart));
     }
 }
 

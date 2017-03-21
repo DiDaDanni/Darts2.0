@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.R.color.black;
 import static com.example.android.darts.MainActivity.*;
 
 public class TwoPlayersActivity extends AppCompatActivity {
@@ -22,6 +23,8 @@ public class TwoPlayersActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         plusBtn = (Button)findViewById(R.id.plus);
+        playBtn = (Button)findViewById(R.id.play);
+        undoBtn = (Button)findViewById(R.id.undo);
         calcView = (TextView)findViewById(R.id.text_view_calc);
         playerOneView = (TextView)findViewById(R.id.player_one_value);
         playerTwoView = (TextView)findViewById(R.id.player_two_value);
@@ -33,6 +36,7 @@ public class TwoPlayersActivity extends AppCompatActivity {
         playerTwoEditText = (EditText)findViewById(R.id.player_two_edit);
 
         enableViews(gridLayout,false);
+        undoBtn.setEnabled(false);
 
     }
 
@@ -105,14 +109,17 @@ public class TwoPlayersActivity extends AppCompatActivity {
             thirdTime = 0;
 
             if (isPlayerOne){
+                undoPlayer = 1;
                 if (valuePlayerOne < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    undoBtn.setEnabled(true);
                     valuePlayerOne -= score;
                     playerOneView.setText(Integer.toString(valuePlayerOne));
 
                     if (valuePlayerOne == 0){
+                        undoBtn.setEnabled(false);
                         enableViews(gridLayout,false);
                         enableEditTextViews(true);
                         Toast.makeText(this, namePlayerOne + " wins", Toast.LENGTH_SHORT).show();
@@ -124,14 +131,17 @@ public class TwoPlayersActivity extends AppCompatActivity {
                 activatePlayer("player2");
             }
             else{
+                undoPlayer = 2;
                 if (valuePlayerTwo < score){
                     Toast.makeText(this, "thrown over", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    undoBtn.setEnabled(true);
                     valuePlayerTwo -= score;
                     playerTwoView.setText(Integer.toString(valuePlayerTwo));
 
                     if (valuePlayerTwo == 0){
+                        undoBtn.setEnabled(false);
                         enableViews(gridLayout,false);
                         enableEditTextViews(true);
                         Toast.makeText(this, namePlayerTwo + " wins", Toast.LENGTH_SHORT).show();
@@ -143,9 +153,25 @@ public class TwoPlayersActivity extends AppCompatActivity {
                 activatePlayer("player1");
             }
             calcView.setText("");
+            undoScore = score;
             score = 0;
         }
 
+    }
+
+    public void onUndoClick(View view){
+       if (undoPlayer == 1){
+            valuePlayerOne += undoScore;
+            playerOneView.setText(Integer.toString(valuePlayerOne));
+            activatePlayer("player1");
+        }
+        else if (undoPlayer == 2){
+            valuePlayerTwo += undoScore;
+            playerTwoView.setText(Integer.toString(valuePlayerTwo));
+            activatePlayer("player2");
+        }
+
+        undoBtn.setEnabled(false);
     }
 
     /***
@@ -200,7 +226,7 @@ public class TwoPlayersActivity extends AppCompatActivity {
             enableEditTextViews(false);
 
             if (isPlayerOne){
-                layoutOne.setBackground(getDrawable(R.drawable.border_color));
+                activatePlayer("player1");
             }
 
         }
@@ -228,6 +254,9 @@ public class TwoPlayersActivity extends AppCompatActivity {
 
                 layoutOne.setBackground(getDrawable(R.drawable.border_color));
                 layoutTwo.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerOneEditText.setTextColor(getResources().getColor(black));
+                playerTwoEditText.setTextColor(getResources().getColor(R.color.grey));
                 break;
 
             case "player2":
@@ -236,6 +265,9 @@ public class TwoPlayersActivity extends AppCompatActivity {
 
                 layoutTwo.setBackground(getDrawable(R.drawable.border_color));
                 layoutOne.setBackgroundColor(getResources().getColor(R.color.inactivePlayer));
+
+                playerTwoEditText.setTextColor(getResources().getColor(black));
+                playerOneEditText.setTextColor(getResources().getColor(R.color.grey));
                break;
         }
     }
@@ -248,6 +280,21 @@ public class TwoPlayersActivity extends AppCompatActivity {
         playerOneEditText.setEnabled(enabled);
         playerTwoEditText.setEnabled(enabled);
         startValueView.setEnabled(enabled);
+
+        changePlayButtonText(enabled);
+
+        if (enabled){
+            playerOneEditText.setTextColor(getResources().getColor(black));
+            playerTwoEditText.setTextColor(getResources().getColor(black));
+        }
+
+    }
+
+    private void changePlayButtonText(boolean play){
+        if (play)
+            playBtn.setText(getResources().getString(R.string.play));
+        else
+            playBtn.setText(getResources().getString(R.string.restart));
     }
 }
 

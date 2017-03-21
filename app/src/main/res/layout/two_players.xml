@@ -235,22 +235,35 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-    android:id="@+id/play"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@id/edit_layout"
-    android:layout_centerHorizontal="true"
-    android:text="Play"
-    android:onClick="onPlayClick"
-    android:layout_marginTop="10dp"/>
-
-    <Button
-        android:id="@+id/reset"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/play"
-        android:layout_centerHorizontal="true"
-        android:text="Reset"
-        android:onClick="onResetClick"/>
+        android:id="@+id/buttons"
+        android:layout_above="@id/text_view_calc"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:onClick="onPlayClick"
+            />
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:onClick="onResetClick"
+            android:layout_alignBaseline="@id/play"
+            android:layout_toEndOf="@+id/play" />
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:onClick="onUndoClick"
+            android:layout_alignBaseline="@id/reset"
+            android:layout_toEndOf="@+id/reset" />
+
+    </RelativeLayout>
 </RelativeLayout>
