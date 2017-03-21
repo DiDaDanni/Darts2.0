@@ -26,13 +26,12 @@ public class MainActivity extends AppCompatActivity {
     public static Button plusBtn, playBtn, undoBtn;
     public static GridLayout gridLayout;
     public static LinearLayout layoutOne, layoutTwo, layoutThree, layoutFour;
-    public static int score = 0, undoScore = 0;
+    public static int score = 0, undoScore = 0, undoPlayer = 0;
     public static int valuePlayerOne, valuePlayerTwo, valuePlayerThree, valuePlayerFour;
     public static int enteredValue, multValue;
     public static int thirdTime = 0;
     public static boolean isPlayerOne = true, isPlayerTwo = false, isPlayerThree = false, isPlayerFour = false;
     public static String namePlayerOne, namePlayerTwo, namePlayerThree, namePlayerFour;
-    public static int undoPlayer = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
